@@ -460,6 +460,11 @@ asmlinkage long sys_truncate64(const char __user *path, loff_t length);
 asmlinkage long sys_ftruncate64(unsigned int fd, loff_t length);
 #endif
 
+#ifdef CONFIG_SWAPPED_MEMORY
+asmlinkage long sys_malloc_swapped(unsigned long addr, unsigned long len,
+			unsigned long in_mem_len);
+#endif
+
 asmlinkage long sys_setxattr(const char __user *path, const char __user *name,
 			     const void __user *value, size_t size, int flags);
 asmlinkage long sys_lsetxattr(const char __user *path, const char __user *name,
