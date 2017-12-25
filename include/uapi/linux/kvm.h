@@ -1181,6 +1181,21 @@ struct kvm_vfio_spapr_tce {
 #define KVM_SET_TSS_ADDR          _IO(KVMIO,   0x47)
 #define KVM_SET_IDENTITY_MAP_ADDR _IOW(KVMIO,  0x48, __u64)
 
+#ifdef KVM_HAVE_SLOW_MEM
+struct kvm_slow_mem_conf {
+	struct {
+		__u64 va_start;
+		__u64 va_end;
+	} slow_region;
+
+	struct {
+		__64 va_start;
+		__u64 va_end;
+	} cache_region;
+}
+#define KVM_SET_SLOW_MEM_REGION	  _IOW(KVMIO, 0x49, struct kvm_slow_mem_conf)
+#endif
+
 /* enable ucontrol for s390 */
 struct kvm_s390_ucas_mapping {
 	__u64 user_addr;

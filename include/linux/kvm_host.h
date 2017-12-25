@@ -446,6 +446,10 @@ struct kvm {
 	struct srcu_struct srcu;
 	struct srcu_struct irq_srcu;
 	pid_t userspace_pid;
+
+#ifdef KVM_HAVE_SLOW_MEM
+	struct kvm_slow_mem_conf slow_mem_conf;
+#endif
 };
 
 #define kvm_err(fmt, ...) \

@@ -2929,6 +2929,14 @@ static long kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
 	return kvm_vm_ioctl_check_extension(kvm, arg);
 }
 
+#ifdef CONFIG_KVM_HAVE_SLOW_MEM
+static long kvm_vm_ioctl_set_slow_mem_conf(struct kvm *kvm, 
+					   struct kvm_slow_mem_conf *conf)
+{
+	
+}
+#endif
+
 static long kvm_vm_ioctl(struct file *filp,
 			   unsigned int ioctl, unsigned long arg)
 {
@@ -3090,6 +3098,19 @@ out_free_irq_routing:
 	case KVM_CHECK_EXTENSION:
 		r = kvm_vm_ioctl_check_extension_generic(kvm, arg);
 		break;
+#ifdef KVM_HAS_SLOW_MEM
+	case KVM_SET_SLOW_MEM_CONF: {
+		struct kvm_slow_mem_conf conf;
+
+		r = -EFAULT;
+		if (copy_from_user(&conf, argp, sizeof(cd))
+			goto out;
+		}
+
+		r = kvm_vm_ioctl_set_slow_mem_conf(kvm, &conf);
+		break;
+	}
+#endif
 	default:
 		r = kvm_arch_vm_ioctl(filp, ioctl, arg);
 	}
